@@ -1,0 +1,84 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: jobseekers API
+  description: API for jobseekers 
+
+paths:
+  /api/v1/jobseekers:
+    x-router-controller: jobseekersController
+    get:
+      description: Returns all jobseekers
+      operationId: getJobseekers
+      responses:
+        200:
+          description: Jobseeker list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/jobseeker'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/v1/jobseekers/{type}:
+    x-router-controller: jobseekersController
+    get:
+      description: Returns a single jobseeker by its type
+      operationId: findBytype
+      parameters:
+        - required: true
+          name: type
+          description: type of the jobseeker to fetch
+          in: path
+          schema:
+            type: string
+      responses:
+        200:
+          description: Jobseeker found by type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/jobseeker'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+
+components:
+  schemas:
+    jobseeker:
+        type: object
+        required:
+          - type
+        properties:
+          year:
+            type: number
+          gender:
+            type: string
+          territory:
+            type: string
+          type:
+            type: string
+          primary:
+            type: number
+          fp_program:
+            type: number
+          general_education:
+            type: number
+          total:
+            type: number
+    error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+      additionalProperties: true
